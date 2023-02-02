@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var totalValue = 0;
+      
+        function displayCryptoValue() {
+          var crypto = document.getElementById("crypto").value;
+          var amount = document.getElementById("amount").value;
+          var value = 0;
+      
+          fetch("https://api.coingecko.com/api/v3/simple/price?ids=" + crypto + "&vs_currencies=usd")
+            .then(response => response.json())
+            .then(data => {
+              switch (crypto) {
+                case "Bitcoin":
+                  value = amount * data.bitcoin.usd;
+                  break;
+                case "Ripple":
+                  value = amount * data.ripple.usd;
+                  break;
+                case "Ethereum":
+                  value = amount * data.ethereum.usd;
+                  break;
+                default:
+                  value = 0;
+              }
+              totalValue += value;
+              document.getElementById("result").innerHTML += "The value of " + amount + " " + crypto + " is $" + value + "<br>";
+              document.getElementById("total").innerHTML = "The total value of your cryptocurrencies is $" + totalValue;
+            });
+        }
+      </script>
+      
+</head>
+<body>
+  <h1>Crypto Value Calculator</h1>
+  <select id="crypto">
+    <option value="Bitcoin">Bitcoin</option>
+    <option value="Ripple">Ripple</option>
+    <option value="Ethereum">Ethereum</option>
+  </select>
+  <input type="text" id="amount" placeholder="Enter amount">
+  <button onclick="displayCryptoValue()">Calculate</button>
+  <div id="result"></div>
+  <div id="total"></div>
+</body>
+</html>
+
